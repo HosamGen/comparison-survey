@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,29 +34,9 @@
   }
 
   .container {
-    max-width: 820px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 24px 20px 80px;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    text-align: center;
-    padding: 48px 0 32px;
-  }
-  .header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    margin-bottom: 12px;
-    color: var(--text);
-  }
-  .header p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    max-width: 520px;
-    margin: 0 auto;
   }
 
   /* ── PROGRESS ── */
@@ -100,95 +78,124 @@
     text-transform: capitalize;
   }
 
-  /* ── QUESTION CARD ── */
-  .question-card {
+  /* ── CARDS ── */
+  .card {
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 32px;
-    margin-bottom: 20px;
+    padding: 28px 32px;
+    margin-bottom: 16px;
+  }
+  .card.animated {
     animation: fadeUp 0.4s ease;
   }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .question-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    font-weight: 400;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-  .question-title em {
-    color: var(--accent);
-    font-style: normal;
-    font-weight: 400;
-  }
 
-  /* ── IMAGE OPTIONS ── */
-  .options {
+  /* ── REFERENCE IMAGES ── */
+  .reference-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .reference-images {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
   @media (max-width: 560px) {
-    .options { grid-template-columns: 1fr; }
+    .reference-images { grid-template-columns: 1fr; }
   }
-  .option {
-    position: relative;
-    border: 2.5px solid transparent;
-    border-radius: var(--radius);
-    overflow: hidden;
-    cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-    background: var(--hover-bg);
-  }
-  .option:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
-  }
-  .option.selected {
-    border-color: var(--selected-border);
-    background: var(--selected-bg);
-    box-shadow: var(--shadow-hover);
-  }
-  .option.selected::after {
-    content: '✓';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--accent);
-    color: #fff;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
-    z-index: 2;
-  }
-  .option img {
+  .ref-img-wrapper { text-align: center; }
+  .ref-img-wrapper img {
     width: 100%;
     aspect-ratio: 4/3;
     object-fit: cover;
+    border-radius: 8px;
     display: block;
   }
-  .option-label {
-    text-align: center;
-    padding: 10px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-muted);
+  .ref-img-label {
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
   }
 
-  /* ── BUTTONS ── */
+  /* ── QUESTION TITLE ── */
+  .question-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .question-title em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  /* ── CHOICE BUTTONS ── */
+  .choice-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .choice-btn {
+    flex: 1;
+    max-width: 200px;
+    padding: 12px 0;
+    border: 2.5px solid var(--progress-bg);
+    border-radius: 8px;
+    background: var(--hover-bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .choice-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .choice-btn.selected {
+    border-color: var(--selected-border);
+    background: var(--selected-bg);
+    color: var(--accent);
+  }
+
+  /* ── INPUT IMAGE ── */
+  .input-image-wrapper {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .input-image-wrapper img {
+    max-width: 360px;
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--progress-bg);
+  }
+  .input-image-caption {
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ── NAV BUTTONS ── */
   .nav-buttons {
     display: flex;
     justify-content: space-between;
-    margin-top: 24px;
+    margin-top: 20px;
     gap: 12px;
   }
   .btn {
@@ -201,26 +208,14 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
-  .btn-secondary {
-    background: var(--progress-bg);
-    color: var(--text);
-  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-secondary { background: var(--progress-bg); color: var(--text); }
   .btn-secondary:hover:not(:disabled) { background: #d4cfc9; }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
+  .btn-primary { background: var(--accent); color: #fff; }
   .btn-primary:hover:not(:disabled) { background: #2f5549; }
 
-  /* ── INTRO / END SCREENS ── */
-  .screen {
-    text-align: center;
-    padding: 60px 20px;
-  }
+  /* ── SCREENS ── */
+  .screen { text-align: center; padding: 60px 20px; }
   .screen h2 {
     font-family: 'DM Serif Display', serif;
     font-size: 1.8rem;
@@ -229,7 +224,7 @@
   }
   .screen p {
     color: var(--text-muted);
-    max-width: 480px;
+    max-width: 520px;
     margin: 0 auto 28px;
     font-size: 0.95rem;
   }
@@ -241,7 +236,7 @@
     box-shadow: var(--shadow);
     padding: 28px 32px;
     margin: 24px auto;
-    max-width: 500px;
+    max-width: 540px;
     text-align: left;
   }
   .instructions li {
@@ -251,7 +246,26 @@
     font-size: 0.9rem;
   }
 
-  /* ── SPINNER ── */
+  .warning-box {
+    background: #fef3cd;
+    border: 1px solid #f0d860;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 20px auto;
+    max-width: 540px;
+    text-align: left;
+    font-size: 0.88rem;
+    color: #705a10;
+  }
+  .warning-box strong { color: #5a4800; }
+
+  /* ── UNANSWERED ── */
+  .card.unanswered {
+    box-shadow: 0 0 0 2px #c44, var(--shadow);
+    animation: shake 0.4s ease;
+  }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
   .spinner {
     width: 36px; height: 36px;
     border: 3px solid var(--progress-bg);
@@ -269,23 +283,26 @@
 
 <div class="container">
 
-  <!-- ── INTRO SCREEN ── -->
+  <!-- INTRO -->
   <div id="intro-screen" class="screen">
     <h2>Perceptual Image Comparison</h2>
-    <p>You will be shown 30 pairs of street-view images. For each pair, select the image that better matches the described perceptual attribute. There are no right or wrong answers.</p>
+    <p>You will be shown 30 pairs of street-view images. For each pair, you will answer three short questions. There are no right or wrong answers — we are interested in your perception.</p>
     <div class="instructions">
       <ol>
-        <li>Each question shows two images side by side.</li>
-        <li>Click on the image you think best fits the attribute.</li>
+        <li>Each page shows <strong>Image A</strong> and <strong>Image B</strong> at the top.</li>
+        <li>Below them are three questions — click your choice for each.</li>
         <li>Use <strong>Next</strong> to proceed. You can go back anytime.</li>
-        <li>Takes approximately <strong>5–8 minutes</strong>.</li>
+        <li>Takes approximately <strong>10–15 minutes</strong>.</li>
       </ol>
+    </div>
+    <div class="warning-box">
+      <strong>Important:</strong> Please <strong>do not refresh</strong> the page during the survey — your progress will be lost. If you see "Saving responses…" at the end, please give it time and <strong>do not close or refresh</strong> the tab.
     </div>
     <br>
     <button class="btn btn-primary" onclick="startSurvey()">Begin Survey</button>
   </div>
 
-  <!-- ── SURVEY SCREEN ── -->
+  <!-- SURVEY -->
   <div id="survey-screen" class="hidden">
     <div class="progress-wrapper">
       <div class="progress-bar-outer">
@@ -297,9 +314,29 @@
       </div>
     </div>
 
-    <div class="question-card" id="question-card">
-      <div class="question-title" id="question-title"></div>
-      <div class="options" id="options-container"></div>
+    <!-- Reference images -->
+    <div class="card animated" id="ref-card">
+      <div class="reference-label">Compare these two images</div>
+      <div class="reference-images" id="ref-images"></div>
+    </div>
+
+    <!-- Q1: Metric -->
+    <div class="card" id="card-q1">
+      <div class="question-title" id="q1-title"></div>
+      <div class="choice-row" id="q1-choices"></div>
+    </div>
+
+    <!-- Q2: Realism -->
+    <div class="card" id="card-q2">
+      <div class="question-title">Which image looks more <em>real</em>?</div>
+      <div class="choice-row" id="q2-choices"></div>
+    </div>
+
+    <!-- Q3: Urban planning -->
+    <div class="card" id="card-q3">
+      <div class="question-title">Given this input image, which of the above two changes would be easier to implement in urban planning?</div>
+      <div class="input-image-wrapper" id="input-image-wrapper"></div>
+      <div class="choice-row" id="q3-choices"></div>
     </div>
 
     <div class="nav-buttons">
@@ -308,7 +345,7 @@
     </div>
   </div>
 
-  <!-- ── END SCREEN ── -->
+  <!-- END -->
   <div id="end-screen" class="hidden screen">
     <h2>Thank you!</h2>
     <p>Your responses have been recorded successfully.</p>
@@ -319,22 +356,11 @@
 
 <script>
 // =====================================================================
-//  📋  CONFIGURATION
+//  CONFIGURATION
 // =====================================================================
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyQ-WnnjJYQljXXs18r0zVykdgi7PzmLPHSeOoZ9cALj9AStQ2kxAQPe9khCBktHio1Hg/exec';  // Paste your Apps Script web app URL here
+const IMAGE_BASE_URL = './images';
 
-// ── GOOGLE SHEETS WEB APP URL ──
-// After deploying the Apps Script (see SETUP.gs), paste the URL here:
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyQ-WnnjJYQljXXs18r0zVykdgi7PzmLPHSeOoZ9cALj9AStQ2kxAQPe9khCBktHio1Hg/exec';  // e.g. 'https://script.google.com/macros/s/XXXXX/exec'
-
-// ── IMAGE DATA ──
-// Base URL for your GitHub Pages repo where images are hosted.
-// Structure: BASE_URL/folder_name/image_filename
-// Example: https://yourusername.github.io/comparison-survey/images/beautiful_1/image.png
-const IMAGE_BASE_URL = './images';  // relative path works for GitHub Pages
-
-// ── PAIRS DATA ──
-// Each entry: { folder, metric, images: [filename1, filename2] }
-// The script randomizes question order and A/B assignment on each load.
 const PAIRS = [
   { folder: "safety_3", metric: "safe", images: ["000002_0081_1.18_mexico_city_iztapalapa_19.351811_-99.072415_best.png", "19.351811_-99.072415_39_r4_gemini_edit_0.jpg"] },
   { folder: "safety_4", metric: "safe", images: ["000005_0147_1.84_bogota_soacha_4.593231_-74.198277_best.png", "4.593231_-74.198277_323_r9_gemini_edit_0.jpg"] },
@@ -369,7 +395,7 @@ const PAIRS = [
 ];
 
 // =====================================================================
-//  🔀  RANDOMIZATION (runs on every page load = per respondent)
+//  RANDOMIZATION
 // =====================================================================
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -379,114 +405,122 @@ function shuffle(arr) {
   return arr;
 }
 
-// Shuffle question order
 const questions = shuffle([...PAIRS]);
-
-// For each question, decide random A/B assignment
-// swapped = true means images[1] is shown first
-questions.forEach(q => {
-  q.swapped = Math.random() < 0.5;
-});
+questions.forEach(q => { q.swapped = Math.random() < 0.5; });
 
 // =====================================================================
-//  📊  STATE
+//  STATE
 // =====================================================================
 let currentIdx = 0;
-const answers = new Array(questions.length).fill(null);
-// Each answer will be: { folder, metric, chosenFile, chosenPosition, imageA_file, imageB_file }
+const answers = new Array(questions.length).fill(null).map(() => ({
+  q1: null, q2: null, q3: null
+}));
 
 // =====================================================================
-//  🎨  RENDERING
+//  RENDERING
 // =====================================================================
-function renderQuestion() {
+function renderPage() {
   const q = questions[currentIdx];
   const imgA = q.swapped ? q.images[1] : q.images[0];
   const imgB = q.swapped ? q.images[0] : q.images[1];
-  const urlA = `${IMAGE_BASE_URL}/${q.folder}/${imgA}`;
-  const urlB = `${IMAGE_BASE_URL}/${q.folder}/${imgB}`;
-
-  // Title
-  document.getElementById('question-title').innerHTML =
-    `Which image looks more <em>${q.metric}</em>?`;
-  document.getElementById('metric-badge').textContent = q.metric;
+  const urlA = `${IMAGE_BASE_URL}/${q.folder}/${encodeURIComponent(imgA)}`;
+  const urlB = `${IMAGE_BASE_URL}/${q.folder}/${encodeURIComponent(imgB)}`;
+  const urlInput = `${IMAGE_BASE_URL}/${q.folder}/input.jpg`;
 
   // Progress
-  const pct = ((currentIdx) / questions.length) * 100;
+  const pct = (currentIdx / questions.length) * 100;
   document.getElementById('progress-bar').style.width = pct + '%';
-  document.getElementById('progress-label').textContent =
-    `${currentIdx + 1} / ${questions.length}`;
+  document.getElementById('progress-label').textContent = `${currentIdx + 1} / ${questions.length}`;
+  document.getElementById('metric-badge').textContent = q.metric;
 
-  // Options
-  const container = document.getElementById('options-container');
-  container.innerHTML = `
-    <div class="option" id="optA" onclick="selectOption('A')">
-      <img src="${urlA}" alt="Option A" loading="lazy">
-      <div class="option-label">Option A</div>
+  // Reference images
+  document.getElementById('ref-images').innerHTML = `
+    <div class="ref-img-wrapper">
+      <img src="${urlA}" alt="Image A" loading="lazy">
+      <div class="ref-img-label">Image A</div>
     </div>
-    <div class="option" id="optB" onclick="selectOption('B')">
-      <img src="${urlB}" alt="Option B" loading="lazy">
-      <div class="option-label">Option B</div>
+    <div class="ref-img-wrapper">
+      <img src="${urlB}" alt="Image B" loading="lazy">
+      <div class="ref-img-label">Image B</div>
     </div>
   `;
 
-  // Restore previous selection if exists
-  if (answers[currentIdx]) {
-    const sel = answers[currentIdx].chosenPosition;
-    document.getElementById('opt' + sel).classList.add('selected');
-  }
+  // Q1
+  document.getElementById('q1-title').innerHTML = `Which image looks more <em>${q.metric}</em>?`;
+  renderChoiceRow('q1-choices', 'q1');
 
-  // Buttons
+  // Q2
+  renderChoiceRow('q2-choices', 'q2');
+
+  // Q3 input image
+  document.getElementById('input-image-wrapper').innerHTML = `
+    <img src="${urlInput}" alt="Original input image" loading="lazy">
+    <div class="input-image-caption">Original input image</div>
+  `;
+  renderChoiceRow('q3-choices', 'q3');
+
+  restoreSelections();
+  document.querySelectorAll('.card.unanswered').forEach(el => el.classList.remove('unanswered'));
+
+  // Nav
   document.getElementById('btn-prev').disabled = currentIdx === 0;
-  const btnNext = document.getElementById('btn-next');
-  if (currentIdx === questions.length - 1) {
-    btnNext.textContent = 'Submit';
-  } else {
-    btnNext.textContent = 'Next →';
-  }
+  document.getElementById('btn-next').textContent =
+    currentIdx === questions.length - 1 ? 'Submit' : 'Next →';
 
-  // Animate card
-  const card = document.getElementById('question-card');
-  card.style.animation = 'none';
-  card.offsetHeight; // trigger reflow
-  card.style.animation = 'fadeUp 0.35s ease';
+  // Animate
+  const refCard = document.getElementById('ref-card');
+  refCard.classList.remove('animated');
+  refCard.offsetHeight;
+  refCard.classList.add('animated');
 }
 
-function selectOption(pos) {
-  // Clear previous
-  document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
-  document.getElementById('opt' + pos).classList.add('selected');
+function renderChoiceRow(containerId, qKey) {
+  document.getElementById(containerId).innerHTML = `
+    <button class="choice-btn" data-q="${qKey}" data-val="A" onclick="selectChoice('${qKey}','A')">Image A</button>
+    <button class="choice-btn" data-q="${qKey}" data-val="B" onclick="selectChoice('${qKey}','B')">Image B</button>
+  `;
+}
 
-  const q = questions[currentIdx];
-  const imgA = q.swapped ? q.images[1] : q.images[0];
-  const imgB = q.swapped ? q.images[0] : q.images[1];
-  const chosenFile = pos === 'A' ? imgA : imgB;
+function restoreSelections() {
+  const ans = answers[currentIdx];
+  ['q1','q2','q3'].forEach(qKey => {
+    if (ans[qKey]) {
+      const btn = document.querySelector(`.choice-btn[data-q="${qKey}"][data-val="${ans[qKey]}"]`);
+      if (btn) btn.classList.add('selected');
+    }
+  });
+}
 
-  answers[currentIdx] = {
-    folder: q.folder,
-    metric: q.metric,
-    chosenPosition: pos,
-    chosenFile: chosenFile,
-    imageA_file: imgA,
-    imageB_file: imgB
-  };
+function selectChoice(qKey, val) {
+  document.querySelectorAll(`.choice-btn[data-q="${qKey}"]`).forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.choice-btn[data-q="${qKey}"][data-val="${val}"]`).classList.add('selected');
+  answers[currentIdx][qKey] = val;
+  const cardMap = { q1: 'card-q1', q2: 'card-q2', q3: 'card-q3' };
+  document.getElementById(cardMap[qKey]).classList.remove('unanswered');
 }
 
 // =====================================================================
-//  🧭  NAVIGATION
+//  NAVIGATION
 // =====================================================================
 function startSurvey() {
   document.getElementById('intro-screen').classList.add('hidden');
   document.getElementById('survey-screen').classList.remove('hidden');
-  renderQuestion();
+  renderPage();
 }
 
 function nextQuestion() {
-  if (!answers[currentIdx]) {
-    // Shake effect if nothing selected
-    const card = document.getElementById('question-card');
-    card.style.animation = 'none';
-    card.offsetHeight;
-    card.style.animation = 'shake 0.4s ease';
+  const ans = answers[currentIdx];
+  const cardMap = { q1: 'card-q1', q2: 'card-q2', q3: 'card-q3' };
+  let allAnswered = true;
+  ['q1','q2','q3'].forEach(qKey => {
+    if (!ans[qKey]) {
+      document.getElementById(cardMap[qKey]).classList.add('unanswered');
+      allAnswered = false;
+    }
+  });
+  if (!allAnswered) {
+    const first = document.querySelector('.card.unanswered');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
 
@@ -496,35 +530,48 @@ function nextQuestion() {
   }
 
   currentIdx++;
-  renderQuestion();
+  renderPage();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function prevQuestion() {
   if (currentIdx > 0) {
     currentIdx--;
-    renderQuestion();
+    renderPage();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
 // =====================================================================
-//  📤  SUBMISSION
+//  SUBMISSION
 // =====================================================================
 async function submitSurvey() {
   document.getElementById('survey-screen').classList.add('hidden');
   document.getElementById('end-screen').classList.remove('hidden');
-
   const statusEl = document.getElementById('submit-status');
 
-  // Build payload
-  const payload = {
-    timestamp: new Date().toISOString(),
-    responses: answers
-  };
+  const responses = questions.map((q, i) => {
+    const imgA = q.swapped ? q.images[1] : q.images[0];
+    const imgB = q.swapped ? q.images[0] : q.images[1];
+    const ans = answers[i];
+    return {
+      folder: q.folder,
+      metric: q.metric,
+      imageA_file: imgA,
+      imageB_file: imgB,
+      q1_metric_choice: ans.q1,
+      q1_metric_chosenFile: ans.q1 === 'A' ? imgA : imgB,
+      q2_realism_choice: ans.q2,
+      q2_realism_chosenFile: ans.q2 === 'A' ? imgA : imgB,
+      q3_planning_choice: ans.q3,
+      q3_planning_chosenFile: ans.q3 === 'A' ? imgA : imgB,
+    };
+  });
+
+  const payload = { timestamp: new Date().toISOString(), responses };
 
   if (GOOGLE_SHEETS_URL) {
-    statusEl.innerHTML = '<div class="spinner"></div><p style="color:var(--text-muted)">Saving responses…</p>';
+    statusEl.innerHTML = '<div class="spinner"></div><p style="color:var(--text-muted)">Saving responses… please do not close this tab.</p>';
     try {
       await fetch(GOOGLE_SHEETS_URL, {
         method: 'POST',
@@ -532,23 +579,16 @@ async function submitSurvey() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      statusEl.innerHTML = '<p style="color:var(--accent);font-weight:600;">✓ Responses saved successfully.</p>';
+      statusEl.innerHTML = '<p style="color:var(--accent);font-weight:600;">✓ Responses saved successfully. Thank you!</p>';
     } catch (err) {
-      statusEl.innerHTML = '<p style="color:#c44;">Could not save to sheet. Your data is logged in the console.</p>';
+      statusEl.innerHTML = '<p style="color:#c44;">Could not save to sheet. Please contact the researcher.</p>';
       console.log('Survey payload:', JSON.stringify(payload, null, 2));
     }
   } else {
-    // No Google Sheets URL configured — just log to console
-    statusEl.innerHTML = '<p style="color:var(--text-muted);">Responses recorded. (Console output — no Sheet URL configured.)</p>';
+    statusEl.innerHTML = '<p style="color:var(--text-muted);">Responses recorded (console). No Sheet URL configured.</p>';
     console.log('Survey payload:', JSON.stringify(payload, null, 2));
   }
 }
-
-// Shake animation (injected dynamically)
-const style = document.createElement('style');
-style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }`;
-document.head.appendChild(style);
 </script>
-
 </body>
 </html>
