@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -343,7 +345,7 @@ const PAIRS = [
   { folder: "depressing_4", metric: "depressing", images: ["000002_0011_9.07_phoenix_sprawl_33.507486_-111.965869_best.png", "33.507486_-111.965869_146_r11_gemini_edit_0.jpg"] },
   { folder: "depressing_5", metric: "depressing", images: ["000003_0016_8.79_burnley_uk_53.799214_-2.242715_best.png", "53.799214_-2.242715_14_r11_gemini_edit_0.jpg"] },
   { folder: "depressing_2", metric: "depressing", images: ["000009_0137_7.05_sao_paulo_periphery_-23.500002_-46.684505_best.png", "-23.500002_-46.684505_151_r2_gemini_edit_0_r6_gemini_edit_0_r11_gemini_edit_0_r6_gemini_edit_0.jpg"] },
-  { folder: "depressing_1", metric: "depressing", images: ["000001_0007_9.32_lima_periphery_-12.047837_-76.969444_best.png", "-12.047072_-76.961821_270_r8_gemini_edit_0_r8_gemini_edit_0_r6_gemini_edit_0_r4_gemini_edit_0.jpg"] },
+  { folder: "depressing_1", metric: "depressing", images: ["000004_0017_8.79_lima_periphery_-12.047072_-76.961821_best.png", "-12.047072_-76.961821_270_r8_gemini_edit_0_r8_gemini_edit_0_r6_gemini_edit_0_r4_gemini_edit_0.jpg"] },
   { folder: "beautiful_1", metric: "beautiful", images: ["000001_0003_0.18_sao_paulo_periphery_-23.558177_-46.609469_best.png", "-23.558177_-46.609469_75_r2_gemini_edit_0_r4_gemini_edit_0.jpg"] },
   { folder: "beautiful_2", metric: "beautiful", images: ["000004_0214_2.39_newark_nj_40.743684_-74.156777_best.png", "40.743684_-74.156777_124_r2_gemini_edit_0_r6_gemini_edit_0_r5_gemini_edit_0_r2_gemini_edit_0.jpg"] },
   { folder: "beautiful_3", metric: "beautiful", images: ["000003_0019_0.37_bogota_soacha_4.595769_-74.180653_best.png", "4.595769_-74.180653_278_r7_gemini_edit_0.jpg"] },
@@ -353,7 +355,7 @@ const PAIRS = [
   { folder: "boring_2", metric: "boring", images: ["000001_0009_9.06_gary_indiana_41.594471_-87.329742_best.png", "41.594471_-87.329742_320_r5_gemini_edit_0_r9_gemini_edit_0.jpg"] },
   { folder: "boring_3", metric: "boring", images: ["000005_0211_6.50_st_louis_north_38.658691_-90.216997_best.png", "38.658691_-90.216997_1_r1_gemini_edit_0.jpg"] },
   { folder: "boring_4", metric: "boring", images: ["000004_0203_6.53_jakarta_north_-6.123585_106.886498_best.png", "-6.123585_106.886498_241_r3_gemini_edit_0.jpg"] },
-  { folder: "boring_5", metric: "boring", images: ["000002_0019_8.65_detroit_core_42.349352_-83.009306_best.png", "42.322905_-83.096148_161_r4_gemini_edit_0.jpg"] },
+  { folder: "boring_5", metric: "boring", images: ["000007_0234_6.32_detroit_core_42.322905_-83.096148_best.png", "42.322905_-83.096148_161_r4_gemini_edit_0.jpg"] },
   { folder: "lively_1", metric: "lively", images: ["000005_0118_1.65_phoenix_sprawl_33.400036_-112.016993_best.png", "gemini_edit_0.jpg"] },
   { folder: "lively_2", metric: "lively", images: ["000006_0171_2.21_st_louis_north_38.655129_-90.219509_best.png", "38.655129_-90.219509_145_r2_gemini_edit_0_r8_gemini_edit_0_r2_gemini_edit_0_r5_gemini_edit_0_r3_gemini_edit_0.jpg"] },
   { folder: "lively_3", metric: "lively", images: ["000009_0304_3.67_atlanta_suburb_33.774327_-84.417054_best.png", "33.774327_-84.417054_136_r11_gemini_edit_0.jpg"] },
@@ -465,8 +467,7 @@ function selectOption(pos) {
     chosenPosition: pos,
     chosenFile: chosenFile,
     imageA_file: imgA,
-    imageB_file: imgB,
-    isOriginalChosen: chosenFile.includes('_best') ? 'original' : 'agent'
+    imageB_file: imgB
   };
 }
 
