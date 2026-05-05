@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perceptual Image Comparison Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f2ed;
+    --card: #ffffff;
+    --text: #2c2c2c;
+    --text-muted: #7a7570;
+    --accent: #3d6b5e;
+    --accent-light: #e8f0ed;
+    --selected-border: #3d6b5e;
+    --selected-bg: #edf5f1;
+    --hover-bg: #f9f7f4;
+    --progress-bg: #e0dbd5;
+    --progress-fill: #3d6b5e;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-hover: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    padding: 16px 0 12px;
+  }
+  .progress-bar-outer {
+    height: 6px;
+    background: var(--progress-bg);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--progress-fill);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .progress-text .metric-badge {
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: capitalize;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.4s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .question-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .question-title em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  /* ── IMAGE OPTIONS ── */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 560px) {
+    .options { grid-template-columns: 1fr; }
+  }
+  .option {
+    position: relative;
+    border: 2.5px solid transparent;
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    background: var(--hover-bg);
+  }
+  .option:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .option.selected {
+    border-color: var(--selected-border);
+    background: var(--selected-bg);
+    box-shadow: var(--shadow-hover);
+  }
+  .option.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 2;
+  }
+  .option img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+  }
+  .option-label {
+    text-align: center;
+    padding: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* ── BUTTONS ── */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: var(--progress-bg);
+    color: var(--text);
+  }
+  .btn-secondary:hover:not(:disabled) { background: #d4cfc9; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) { background: #2f5549; }
+
+  /* ── INTRO / END SCREENS ── */
+  .screen {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .screen h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .screen p {
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 28px;
+    font-size: 0.95rem;
+  }
+  .screen .btn { min-width: 180px; }
+
+  .instructions {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+    margin: 24px auto;
+    max-width: 500px;
+    text-align: left;
+  }
+  .instructions li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+
+  /* ── SPINNER ── */
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--progress-bg);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 20px auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── INTRO SCREEN ── -->
+  <div id="intro-screen" class="screen">
+    <h2>Perceptual Image Comparison</h2>
+    <p>You will be shown 30 pairs of street-view images. For each pair, select the image that better matches the described perceptual attribute. There are no right or wrong answers.</p>
+    <div class="instructions">
+      <ol>
+        <li>Each question shows two images side by side.</li>
+        <li>Click on the image you think best fits the attribute.</li>
+        <li>Use <strong>Next</strong> to proceed. You can go back anytime.</li>
+        <li>Takes approximately <strong>5–8 minutes</strong>.</li>
+      </ol>
+    </div>
+    <br>
+    <button class="btn btn-primary" onclick="startSurvey()">Begin Survey</button>
+  </div>
+
+  <!-- ── SURVEY SCREEN ── -->
+  <div id="survey-screen" class="hidden">
+    <div class="progress-wrapper">
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="progress-bar"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progress-label">1 / 30</span>
+        <span class="metric-badge" id="metric-badge"></span>
+      </div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <div class="question-title" id="question-title"></div>
+      <div class="options" id="options-container"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">← Back</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ── END SCREEN ── -->
+  <div id="end-screen" class="hidden screen">
+    <h2>Thank you!</h2>
+    <p>Your responses have been recorded successfully.</p>
+    <div id="submit-status"></div>
+  </div>
+
+</div>
+
+<script>
+// =====================================================================
+//  📋  CONFIGURATION
+// =====================================================================
+
+// ── GOOGLE SHEETS WEB APP URL ──
+// After deploying the Apps Script (see SETUP.gs), paste the URL here:
+const GOOGLE_SHEETS_URL = '';  // e.g. 'https://script.google.com/macros/s/XXXXX/exec'
+
+// ── IMAGE DATA ──
+// Base URL for your GitHub Pages repo where images are hosted.
+// Structure: BASE_URL/folder_name/image_filename
+// Example: https://yourusername.github.io/comparison-survey/images/beautiful_1/image.png
+const IMAGE_BASE_URL = './images';  // relative path works for GitHub Pages
+
+// ── PAIRS DATA ──
+// Each entry: { folder, metric, images: [filename1, filename2] }
+// The script randomizes question order and A/B assignment on each load.
+const PAIRS = [
+  { folder: "safety_3", metric: "safe", images: ["000002_0081_1.18_mexico_city_iztapalapa_19.351811_-99.072415_best.png", "19.351811_-99.072415_39_r4_gemini_edit_0.jpg"] },
+  { folder: "safety_4", metric: "safe", images: ["000005_0147_1.84_bogota_soacha_4.593231_-74.198277_best.png", "4.593231_-74.198277_323_r9_gemini_edit_0.jpg"] },
+  { folder: "safety_5", metric: "safe", images: ["000003_0082_1.19_flint_michigan_43.028216_-83.68338_best.png", "43.028216_-83.68338_247_r9_gemini_edit_0.jpg"] },
+  { folder: "safety_2", metric: "safe", images: ["000009_0376_4.85_baltimore_west_39.305922_-76.63757_best.png", "39.305922_-76.63757_136_r6_gemini_edit_0_r5_gemini_edit_0.jpg"] },
+  { folder: "safety_1", metric: "safe", images: ["000007_0240_2.96_flint_michigan_43.018458_-83.695301_best.png", "43.018458_-83.695301_78_r10_gemini_edit_0.jpg"] },
+  { folder: "depressing_3", metric: "depressing", images: ["000007_0130_7.16_manila_tondo_14.59923_120.977975_best.png", "14.59923_120.977975_352_r6_gemini_edit_0.jpg"] },
+  { folder: "depressing_4", metric: "depressing", images: ["000002_0011_9.07_phoenix_sprawl_33.507486_-111.965869_best.png", "33.507486_-111.965869_146_r11_gemini_edit_0.jpg"] },
+  { folder: "depressing_5", metric: "depressing", images: ["000003_0016_8.79_burnley_uk_53.799214_-2.242715_best.png", "53.799214_-2.242715_14_r11_gemini_edit_0.jpg"] },
+  { folder: "depressing_2", metric: "depressing", images: ["000009_0137_7.05_sao_paulo_periphery_-23.500002_-46.684505_best.png", "-23.500002_-46.684505_151_r2_gemini_edit_0_r6_gemini_edit_0_r11_gemini_edit_0_r6_gemini_edit_0.jpg"] },
+  { folder: "depressing_1", metric: "depressing", images: ["000001_0007_9.32_lima_periphery_-12.047837_-76.969444_best.png", "-12.047072_-76.961821_270_r8_gemini_edit_0_r8_gemini_edit_0_r6_gemini_edit_0_r4_gemini_edit_0.jpg"] },
+  { folder: "beautiful_1", metric: "beautiful", images: ["000001_0003_0.18_sao_paulo_periphery_-23.558177_-46.609469_best.png", "-23.558177_-46.609469_75_r2_gemini_edit_0_r4_gemini_edit_0.jpg"] },
+  { folder: "beautiful_2", metric: "beautiful", images: ["000004_0214_2.39_newark_nj_40.743684_-74.156777_best.png", "40.743684_-74.156777_124_r2_gemini_edit_0_r6_gemini_edit_0_r5_gemini_edit_0_r2_gemini_edit_0.jpg"] },
+  { folder: "beautiful_3", metric: "beautiful", images: ["000003_0019_0.37_bogota_soacha_4.595769_-74.180653_best.png", "4.595769_-74.180653_278_r7_gemini_edit_0.jpg"] },
+  { folder: "beautiful_4", metric: "beautiful", images: ["000006_0217_2.42_camden_nj_39.936176_-75.120268_best.png", "39.936176_-75.120268_339_r5_gemini_edit_0.jpg"] },
+  { folder: "beautiful_5", metric: "beautiful", images: ["000002_0012_0.30_kyiv_obolon_50.5288_30.497712_best.png", "50.5288_30.497712_100_r3_gemini_edit_0.jpg"] },
+  { folder: "boring_1", metric: "boring", images: ["000006_0232_6.33_detroit_east_42.425756_-82.973148_best.png", "42.425756_-82.973148_248_r4_gemini_edit_0_r7_gemini_edit_0.jpg"] },
+  { folder: "boring_2", metric: "boring", images: ["000001_0009_9.06_gary_indiana_41.594471_-87.329742_best.png", "41.594471_-87.329742_320_r5_gemini_edit_0_r9_gemini_edit_0.jpg"] },
+  { folder: "boring_3", metric: "boring", images: ["000005_0211_6.50_st_louis_north_38.658691_-90.216997_best.png", "38.658691_-90.216997_1_r1_gemini_edit_0.jpg"] },
+  { folder: "boring_4", metric: "boring", images: ["000004_0203_6.53_jakarta_north_-6.123585_106.886498_best.png", "-6.123585_106.886498_241_r3_gemini_edit_0.jpg"] },
+  { folder: "boring_5", metric: "boring", images: ["000002_0019_8.65_detroit_core_42.349352_-83.009306_best.png", "42.322905_-83.096148_161_r4_gemini_edit_0.jpg"] },
+  { folder: "lively_1", metric: "lively", images: ["000005_0118_1.65_phoenix_sprawl_33.400036_-112.016993_best.png", "gemini_edit_0.jpg"] },
+  { folder: "lively_2", metric: "lively", images: ["000006_0171_2.21_st_louis_north_38.655129_-90.219509_best.png", "38.655129_-90.219509_145_r2_gemini_edit_0_r8_gemini_edit_0_r2_gemini_edit_0_r5_gemini_edit_0_r3_gemini_edit_0.jpg"] },
+  { folder: "lively_3", metric: "lively", images: ["000009_0304_3.67_atlanta_suburb_33.774327_-84.417054_best.png", "33.774327_-84.417054_136_r11_gemini_edit_0.jpg"] },
+  { folder: "lively_4", metric: "lively", images: ["000004_0035_0.61_baltimore_west_39.28346_-76.631184_best.png", "39.28346_-76.631184_91_r11_gemini_edit_0.jpg"] },
+  { folder: "lively_5", metric: "lively", images: ["000003_0020_0.44_detroit_core_42.356125_-83.014078_best.png", "42.356125_-83.014078_359_r6_gemini_edit_0.jpg"] },
+  { folder: "wealthy_1", metric: "wealthy", images: ["000002_0018_0.57_mexico_city_iztapalapa_19.34552_-99.072885_best.png", "19.34552_-99.072885_29_r6_gemini_edit_0_r5_gemini_edit_0.jpg"] },
+  { folder: "wealthy_2", metric: "wealthy", images: ["000006_0139_2.40_gary_indiana_41.58726_-87.336587_best.png", "41.58726_-87.336587_325_r3_gemini_edit_0_r8_gemini_edit_0.jpg"] },
+  { folder: "wealthy_3", metric: "wealthy", images: ["000000_0002_0.28_mexico_city_iztapalapa_19.355013_-99.049999_best.png", "19.355013_-99.049999_181_r2_gemini_edit_0.jpg"] },
+  { folder: "wealthy_4", metric: "wealthy", images: ["000001_0004_0.31_lagos_mushin_6.550436_3.355499_best.png", "6.550436_3.355499_281_r11_gemini_edit_0.jpg"] },
+  { folder: "wealthy_5", metric: "wealthy", images: ["000007_0152_2.56_burnley_uk_53.797766_-2.244447_best.png", "53.797766_-2.244447_109_r4_gemini_edit_0.jpg"] },
+];
+
+// =====================================================================
+//  🔀  RANDOMIZATION (runs on every page load = per respondent)
+// =====================================================================
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Shuffle question order
+const questions = shuffle([...PAIRS]);
+
+// For each question, decide random A/B assignment
+// swapped = true means images[1] is shown first
+questions.forEach(q => {
+  q.swapped = Math.random() < 0.5;
+});
+
+// =====================================================================
+//  📊  STATE
+// =====================================================================
+let currentIdx = 0;
+const answers = new Array(questions.length).fill(null);
+// Each answer will be: { folder, metric, chosenFile, chosenPosition, imageA_file, imageB_file }
+
+// =====================================================================
+//  🎨  RENDERING
+// =====================================================================
+function renderQuestion() {
+  const q = questions[currentIdx];
+  const imgA = q.swapped ? q.images[1] : q.images[0];
+  const imgB = q.swapped ? q.images[0] : q.images[1];
+  const urlA = `${IMAGE_BASE_URL}/${q.folder}/${imgA}`;
+  const urlB = `${IMAGE_BASE_URL}/${q.folder}/${imgB}`;
+
+  // Title
+  document.getElementById('question-title').innerHTML =
+    `Which image looks more <em>${q.metric}</em>?`;
+  document.getElementById('metric-badge').textContent = q.metric;
+
+  // Progress
+  const pct = ((currentIdx) / questions.length) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent =
+    `${currentIdx + 1} / ${questions.length}`;
+
+  // Options
+  const container = document.getElementById('options-container');
+  container.innerHTML = `
+    <div class="option" id="optA" onclick="selectOption('A')">
+      <img src="${urlA}" alt="Option A" loading="lazy">
+      <div class="option-label">Option A</div>
+    </div>
+    <div class="option" id="optB" onclick="selectOption('B')">
+      <img src="${urlB}" alt="Option B" loading="lazy">
+      <div class="option-label">Option B</div>
+    </div>
+  `;
+
+  // Restore previous selection if exists
+  if (answers[currentIdx]) {
+    const sel = answers[currentIdx].chosenPosition;
+    document.getElementById('opt' + sel).classList.add('selected');
+  }
+
+  // Buttons
+  document.getElementById('btn-prev').disabled = currentIdx === 0;
+  const btnNext = document.getElementById('btn-next');
+  if (currentIdx === questions.length - 1) {
+    btnNext.textContent = 'Submit';
+  } else {
+    btnNext.textContent = 'Next →';
+  }
+
+  // Animate card
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  card.offsetHeight; // trigger reflow
+  card.style.animation = 'fadeUp 0.35s ease';
+}
+
+function selectOption(pos) {
+  // Clear previous
+  document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+  document.getElementById('opt' + pos).classList.add('selected');
+
+  const q = questions[currentIdx];
+  const imgA = q.swapped ? q.images[1] : q.images[0];
+  const imgB = q.swapped ? q.images[0] : q.images[1];
+  const chosenFile = pos === 'A' ? imgA : imgB;
+
+  answers[currentIdx] = {
+    folder: q.folder,
+    metric: q.metric,
+    chosenPosition: pos,
+    chosenFile: chosenFile,
+    imageA_file: imgA,
+    imageB_file: imgB,
+    isOriginalChosen: chosenFile.includes('_best') ? 'original' : 'agent'
+  };
+}
+
+// =====================================================================
+//  🧭  NAVIGATION
+// =====================================================================
+function startSurvey() {
+  document.getElementById('intro-screen').classList.add('hidden');
+  document.getElementById('survey-screen').classList.remove('hidden');
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (!answers[currentIdx]) {
+    // Shake effect if nothing selected
+    const card = document.getElementById('question-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'shake 0.4s ease';
+    return;
+  }
+
+  if (currentIdx === questions.length - 1) {
+    submitSurvey();
+    return;
+  }
+
+  currentIdx++;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevQuestion() {
+  if (currentIdx > 0) {
+    currentIdx--;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// =====================================================================
+//  📤  SUBMISSION
+// =====================================================================
+async function submitSurvey() {
+  document.getElementById('survey-screen').classList.add('hidden');
+  document.getElementById('end-screen').classList.remove('hidden');
+
+  const statusEl = document.getElementById('submit-status');
+
+  // Build payload
+  const payload = {
+    timestamp: new Date().toISOString(),
+    responses: answers
+  };
+
+  if (GOOGLE_SHEETS_URL) {
+    statusEl.innerHTML = '<div class="spinner"></div><p style="color:var(--text-muted)">Saving responses…</p>';
+    try {
+      await fetch(GOOGLE_SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      statusEl.innerHTML = '<p style="color:var(--accent);font-weight:600;">✓ Responses saved successfully.</p>';
+    } catch (err) {
+      statusEl.innerHTML = '<p style="color:#c44;">Could not save to sheet. Your data is logged in the console.</p>';
+      console.log('Survey payload:', JSON.stringify(payload, null, 2));
+    }
+  } else {
+    // No Google Sheets URL configured — just log to console
+    statusEl.innerHTML = '<p style="color:var(--text-muted);">Responses recorded. (Console output — no Sheet URL configured.)</p>';
+    console.log('Survey payload:', JSON.stringify(payload, null, 2));
+  }
+}
+
+// Shake animation (injected dynamically)
+const style = document.createElement('style');
+style.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
