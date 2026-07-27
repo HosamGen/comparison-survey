@@ -271,24 +271,31 @@
   }
 
   .original {
-    display: grid;
-    grid-template-columns: minmax(180px, 320px) 1fr;
-    gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
     align-items: center;
   }
 
   .original img {
     display: block;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+    width: min(720px, 100%);
+    height: auto;
+    object-fit: contain;
     border: 1px solid var(--line);
     border-radius: 12px;
   }
 
+  .original > div {
+    width: 100%;
+  }
+
   .original-copy {
+    max-width: 720px;
+    margin: 0 auto 16px;
     color: var(--muted);
     font-size: 0.92rem;
+    text-align: center;
   }
 
   .original-copy strong {
@@ -336,8 +343,7 @@
     .shell { width: min(100% - 20px, 1080px); padding-top: 10px; }
     .intro, .complete { margin-top: 3vh; padding: 28px 20px; }
     .images { grid-template-columns: 1fr; }
-    .original { grid-template-columns: 1fr; }
-    .original img { max-width: 360px; margin: 0 auto; }
+    .original img { width: 100%; }
   }
 </style>
 </head>
@@ -564,7 +570,6 @@ async function submitSurvey() {
   survey.classList.add("hidden");
   complete.classList.remove("hidden");
   const status = document.getElementById("submit-status");
-  status.innerHTML = '<div class="spinner"></div><p class="lead">Saving responses… please keep this tab open.</p>';
 
   const payload = {
     study: STUDY_ID,
@@ -576,16 +581,22 @@ async function submitSurvey() {
   };
 
   try {
-    await fetch(GOOGLE_SHEETS_URL, {
+    // Apps Script's cross-origin response is opaque, so waiting for it cannot
+    // verify a sheet write. Queue the small payload with keepalive instead;
+    // this lets the request finish even if the participant closes the tab.
+    const request = fetch(GOOGLE_SHEETS_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify(payload),
+      keepalive: true
     });
-    status.innerHTML = '<p style="margin-top:22px;color:var(--accent);font-weight:700;">✓ Submission sent successfully.</p>';
+    status.innerHTML = '<p style="margin-top:22px;color:var(--accent);font-weight:700;">✓ Submission sent. It is being saved in the background; you may close this tab.</p>';
+    await request;
   } catch (error) {
     submitting = false;
-    status.innerHTML = '<p class="error" style="margin-top:22px;">The submission could not be sent. Please contact the researcher before closing this page.</p>';
+    status.innerHTML = '<p class="error" style="margin-top:22px;">The submission could not be sent. Check your connection and try again.</p><button class="button" type="button" id="retry-submit" style="margin-top:16px;">Retry submission</button>';
+    document.getElementById("retry-submit").addEventListener("click", submitSurvey);
     console.error("Survey submission failed", error, payload);
   }
 }
