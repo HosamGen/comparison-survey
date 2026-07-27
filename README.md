@@ -13,6 +13,10 @@ When GitHub Pages is enabled for the repository, the new study is available at:
 https://hosamgen.github.io/comparison-survey/lance.html
 ```
 
+If that URL returns 404, open **Repository settings → Pages**, choose
+**Deploy from a branch**, select **main** and **/(root)**, then save. Merging
+the survey branch into `main` will trigger the Pages build.
+
 The LANCE page randomizes both pair order and left/right model placement. It
 submits the selected filename and hidden model identity for the target metric,
 realism, and urban-planning questions.
