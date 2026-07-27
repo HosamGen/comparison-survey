@@ -346,14 +346,14 @@
   <section id="intro" class="intro">
     <span class="eyebrow">Research study</span>
     <h1>Image Editing Comparison</h1>
-    <p class="lead">You will review eight pairs of edited street-view images. The editing systems are intentionally hidden; please judge only what you see.</p>
+    <p class="lead">You will review 30 pairs of edited street-view images: five examples for each of six perceptual metrics. The editing systems are intentionally hidden; please judge only what you see.</p>
 
     <div class="instructions">
       <ol>
         <li>Compare Image A and Image B for the requested quality.</li>
         <li>Answer all three questions for every pair.</li>
         <li>The original input is shown for the urban-planning question.</li>
-        <li>You can go back before submitting. The study takes about 4–6 minutes.</li>
+        <li>You can go back before submitting. The study takes about 10–15 minutes.</li>
       </ol>
     </div>
 
@@ -365,7 +365,7 @@
     <div class="progress">
       <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
       <div class="progress-meta">
-        <span id="progress-label">Pair 1 of 8</span>
+        <span id="progress-label">Pair 1 of 30</span>
         <span id="metric-pill" class="metric-pill"></span>
       </div>
     </div>
@@ -410,85 +410,11 @@
   </section>
 </main>
 
+<script src="./lance-study/pairs.js"></script>
 <script>
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyQ-WnnjJYQljXXs18r0zVykdgi7PzmLPHSeOoZ9cALj9AStQ2kxAQPe9khCBktHio1Hg/exec";
 const STUDY_ID = "vida_geo_vs_lance_v1";
-const IMAGE_ROOT = "./lance-study/pairs";
-
-const PAIRS = [
-  {
-    folder: "beautiful_1",
-    metric: "beautiful",
-    input: "input/39.284776_-76.641949_195.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus6.150__Ours__beautiful__0008_39.284776_-76.641949_195_r7_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__domain_s1__delta_plus6.574__0218_2.42_baltimore_west_39.284776_-76.641949_domain_s1.png" }
-    ]
-  },
-  {
-    folder: "beautiful_2",
-    metric: "beautiful",
-    input: "input/4.595769_-74.180653_278.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus2.858__Ours__beautiful__0018_4.595769_-74.180653_278_r6_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__domain_s1__delta_plus5.954__0019_0.37_bogota_soacha_4.595769_-74.180653_domain_s1.png" }
-    ]
-  },
-  {
-    folder: "lively_1",
-    metric: "lively",
-    input: "input/33.773723_-84.464898_92.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus2.777__Ours__lively__0003_33.773723_-84.464898_92_r1_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__object_s1__delta_plus5.225__0220_2.76_atlanta_suburb_33.773723_-84.464898_object_s1.png" }
-    ]
-  },
-  {
-    folder: "lively_2",
-    metric: "lively",
-    input: "input/33.774327_-84.417054_136.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus3.277__Ours__lively__0017_33.774327_-84.417054_136_r4_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__background_s1__delta_plus0.422__0304_3.67_atlanta_suburb_33.774327_-84.417054_background_s1.png" }
-    ]
-  },
-  {
-    folder: "safety_1",
-    metric: "safe",
-    input: "input/33.714056_-84.461979_117.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus2.991__Ours__safety__0006_33.714056_-84.461979_117_r4_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__background_s1__delta_plus2.252__0348_4.38_atlanta_suburb_33.714056_-84.461979_background_s1.png" }
-    ]
-  },
-  {
-    folder: "safety_2",
-    metric: "safe",
-    input: "input/39.305922_-76.63757_136.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus1.657__Ours__safety__0019_39.305922_-76.63757_136_r6_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__subject_s1__delta_plus1.720__0376_4.85_baltimore_west_39.305922_-76.63757_subject_s1.png" }
-    ]
-  },
-  {
-    folder: "wealthy_1",
-    metric: "wealthy",
-    input: "input/53.797766_-2.244447_109.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus3.547__Ours__wealthy__0001_53.797766_-2.244447_109_r4_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__background_s1__delta_plus6.389__0152_2.56_burnley_uk_53.797766_-2.244447_background_s1.png" }
-    ]
-  },
-  {
-    folder: "wealthy_2",
-    metric: "wealthy",
-    input: "input/41.58726_-87.336587_325.jpg",
-    outputs: [
-      { model: "VIDA-GEO", file: "VIDA-GEO/best/BEST__delta_plus5.549__Ours__wealthy__0012_41.58726_-87.336587_325_r3_gemini_edit_0.jpg" },
-      { model: "LANCE", file: "LANCE/best/BEST__subject_s1__delta_plus3.131__0139_2.40_gary_indiana_41.58726_-87.336587_subject_s1.png" }
-    ]
-  }
-];
+const IMAGE_ROOT = "./images";
 
 function shuffle(items) {
   for (let index = items.length - 1; index > 0; index -= 1) {
@@ -550,7 +476,11 @@ function render() {
   document.getElementById("progress-fill").style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
   document.getElementById("progress-label").textContent = `Pair ${currentIndex + 1} of ${questions.length}`;
   document.getElementById("metric-pill").textContent = question.metric;
-  document.getElementById("q1-title").innerHTML = `Which image looks more <em>${question.metric}</em>?`;
+  const metricDirection = ["boring", "depressing"].includes(question.metric)
+    ? "less"
+    : "more";
+  document.getElementById("q1-title").innerHTML =
+    `Which image looks ${metricDirection} <em>${question.metric}</em>?`;
 
   document.getElementById("images").innerHTML = [
     { label: "A", output: imageA },
