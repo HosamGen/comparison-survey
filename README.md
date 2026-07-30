@@ -30,8 +30,26 @@ Selections are recorded in
 [`lance-study/selection_manifest.csv`](lance-study/selection_manifest.csv) and
 can be rebuilt with
 [`scripts/build_lance_survey_assets.py`](scripts/build_lance_survey_assets.py).
-Accordingly, the target-metric question asks for the image that is less boring
-or less depressing for those two lower-is-better metrics.
+For consistent participant-facing wording, the target-metric question always
+asks **"Which image looks more [metric]?"** This includes **more boring** and
+**more depressing**. The response sheet preserves the image the participant
+literally selected. During scoring, the selection is treated as the preferred
+model for positive metrics, while the *other* image is treated as preferred
+for the lower-is-better `boring` and `depressing` metrics.
+
+Score a downloaded `VIDA_vs_LANCE` CSV with:
+
+```bash
+python3 scripts/score_lance_responses.py \
+  VIDA_vs_LANCE.csv \
+  --output VIDA_vs_LANCE_scored.csv \
+  --summary VIDA_vs_LANCE_summary.csv
+```
+
+The scored CSV retains every raw response column and adds explicit
+`Q1_Objective_*` columns, including whether inversion was applied. This keeps
+the participant response auditable while preventing lower-is-better metrics
+from being counted backward.
 
 ## Google Sheets / Apps Script update
 
