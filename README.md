@@ -1,4 +1,4 @@
-# comparison-survey
+# Comparison-survey
 
 Static, blinded image-comparison surveys for the VIDA-GEO evaluation.
 
