@@ -5,7 +5,7 @@ Run from the root of the comparison-survey repo after make_blind_images.py:
     python make_pair_images.py                 # every pair in blind/study*/
     python make_pair_images.py blind/study1/p01 out.jpg   # one pair, custom output
 
-For every blind/<study>/pNN_A.jpg + pNN_B.jpg it writes blind/<study>/pNN_AB.jpg,
+For every blind/<study>/pNN_A.jpg + pNN_B.jpg it writes blind_AB/<study>/pNN_AB.jpg,
 with "Image A" over the left image and "Image B" over the right one.
 """
 import sys
@@ -45,8 +45,9 @@ def main() -> None:
         return
     for a_path in sorted(Path("blind").glob("study*/p*_A.jpg")):
         prefix = a_path.with_name(a_path.name[: -len("_A.jpg")])
-        make_pair(prefix, prefix.with_name(prefix.name + "_AB.jpg"))
-        print(prefix.with_name(prefix.name + "_AB.jpg"))
+        out = Path("blind_AB") / prefix.parent.name / f"{prefix.name}_AB.jpg"
+        make_pair(prefix, out)
+        print(out)
 
 
 if __name__ == "__main__":
