@@ -1,0 +1,47 @@
+[
+  {
+    "type": "multiple_choice",
+    "description": "Q1: Answer Question 1 shown above (e.g. \"Which image looks more beautiful?\").",
+    "answer_limit": 1,
+    "options": [
+      {
+        "label": "Image A",
+        "value": "A"
+      },
+      {
+        "label": "Image B",
+        "value": "B"
+      }
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "description": "Q2: Which image looks more real?",
+    "answer_limit": 1,
+    "options": [
+      {
+        "label": "Image A",
+        "value": "A"
+      },
+      {
+        "label": "Image B",
+        "value": "B"
+      }
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "description": "Q3: Given the original input image, which of the two changes (Image A or Image B) would be easier to implement in urban planning?",
+    "answer_limit": 1,
+    "options": [
+      {
+        "label": "Image A",
+        "value": "A"
+      },
+      {
+        "label": "Image B",
+        "value": "B"
+      }
+    ]
+  }
+]

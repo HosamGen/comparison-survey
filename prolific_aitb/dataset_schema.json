@@ -1,0 +1,26 @@
+{
+  "strict": true,
+  "fields": {
+    "comparison_image": {
+      "type": "image_url",
+      "label": "Image A and Image B"
+    },
+    "original_image": {
+      "type": "image_url",
+      "label": "Original input image"
+    },
+    "metric_question": {
+      "type": "text",
+      "label": "Question 1"
+    },
+    "META_study": {
+      "type": "metadata"
+    },
+    "META_pair_id": {
+      "type": "metadata"
+    },
+    "META_metric": {
+      "type": "metadata"
+    }
+  }
+}
